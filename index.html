@@ -12,35 +12,33 @@
 
   <div id="result"></div>
 
- <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<script type="module">
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 
-  <script>
-    const supabaseUrl = "https://tndnrhspveowftwdkiro.supabase.co";
-    const supabaseKey = "sb_publishable_XliCCiEePYyYHEnkVZTTng_v80lsZMq";
+const supabaseUrl = "https://tndnrhspveowftwdkiro.supabase.co";
+const supabaseKey = "sb_publishable_XliCCiEePYyYHEnkVZTTng_v80lsZMq";
 
-    const supabase = window.supabase.createClient(
-      supabaseUrl,
-      supabaseKey
-    );
+const supabase = createClient(
+  supabaseUrl,
+  supabaseKey
+);
 
-    async function checkIn() {
-      const nickname =
-        document.getElementById("nickname").value;
+window.checkIn = async function() {
+  const nickname =
+    document.getElementById("nickname").value;
 
-      const today =
-        new Date().toISOString().split("T")[0];
+  const today =
+    new Date().toISOString().split("T")[0];
 
-      const { error } =
-        await supabase.from("attendance").insert([
-          {
-            nickname: nickname,
-            attendance_date: today
-          }
-        ]);
+  const { error } =
+    await supabase.from("attendance").insert([
+      {
+        nickname: nickname,
+        attendance_date: today
+      }
+    ]);
 
-      document.getElementById("result").innerHTML =
-        error ? error.message : "출석 완료!";
-    }
-  </script>
-</body>
-</html>
+  document.getElementById("result").innerHTML =
+    error ? error.message : "출석 완료!";
+}
+</script>
