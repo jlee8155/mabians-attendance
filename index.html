@@ -1,10 +1,46 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>마비안스 출석센터</title>
+  <meta charset="utf-8">
+  <title>마비안스 출석센터</title>
 </head>
 <body>
-    <h1>마비안스 출석센터</h1>
-    <p>출석 시스템 테스트 중...</p>
+  <h1>마비안스 출석센터</h1>
+
+  <input id="nickname" placeholder="닉네임">
+  <button onclick="checkIn()">출석하기</button>
+
+  <div id="result"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+  <script>
+    const supabaseUrl = "https://tndnrhspveowftwdkiro.supabase.co";
+    const supabaseKey = "sb_publishable_XliCCiEePYyYHEnkVZTTng_v80lsZMq";
+
+    const supabase = window.supabase.createClient(
+      supabaseUrl,
+      supabaseKey
+    );
+
+    async function checkIn() {
+      const nickname =
+        document.getElementById("nickname").value;
+
+      const today =
+        new Date().toISOString().split("T")[0];
+
+      const { error } =
+        await supabase.from("attendance").insert([
+          {
+            nickname: nickname,
+            attendance_date: today
+          }
+        ]);
+
+      document.getElementById("result").innerHTML =
+        error ? error.message : "출석 완료!";
+    }
+  </script>
 </body>
 </html>
